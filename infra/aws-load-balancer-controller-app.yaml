@@ -14,7 +14,6 @@ spec:
       valuesObject:
         clusterName: aws-eks-platform
         region: us-west-2
-        vpcId: vpc-0c74e5e9cda03f0dd
         nodeSelector:
           kubernetes.io/arch: arm64
         serviceAccount:
