@@ -7,7 +7,7 @@ metadata:
   annotations:
     # Share a single ALB across all platform ingresses to avoid
     # paying ~$18/month per Ingress.
-    alb.ingress.kubernetes.io/group.name: platform
+    alb.ingress.kubernetes.io/group.name: platform-UI
     alb.ingress.kubernetes.io/scheme: internet-facing
     # Route directly to pod IPs; requires VPC CNI (which EKS uses).
     alb.ingress.kubernetes.io/target-type: ip
@@ -15,7 +15,7 @@ metadata:
     alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:765148471972:certificate/7830a4a4-6103-4a03-9b80-c7be7d4a716b
     alb.ingress.kubernetes.io/healthcheck-path: /healthz
-    alb.ingress.kubernetes.io/inbound-cidrs: "65.49.213.73/32"
+    alb.ingress.kubernetes.io/inbound-cidrs: "65.49.213.73/32,120.229.36.13/32"
 spec:
   ingressClassName: alb
   rules:
