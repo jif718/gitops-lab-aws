@@ -9,10 +9,10 @@ spec:
   source:
     repoURL: https://aws.github.io/eks-charts
     chart: aws-load-balancer-controller
-    targetRevision: 1.14.0
+    targetRevision: 3.5.0
     helm:
       valuesObject:
-        clusterName: aws-eks-platform
+        clusterName: aws-lab
         region: us-west-2
         nodeSelector:
           kubernetes.io/arch: arm64
@@ -20,7 +20,7 @@ spec:
           create: true
           name: aws-load-balancer-controller
           annotations:
-            eks.amazonaws.com/role-arn: arn:aws:iam::765148471972:role/aws-eks-platform-alb-controller
+            eks.amazonaws.com/role-arn: arn:aws:iam::765148471972:role/aws-lab-alb-controller
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system

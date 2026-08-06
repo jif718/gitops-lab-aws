@@ -4,12 +4,14 @@ kind: Application
 metadata:
   name: external-dns
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"   # after aws-load-balancer-controller
 spec:
   project: default
   source:
     repoURL: https://kubernetes-sigs.github.io/external-dns/
     chart: external-dns
-    targetRevision: 1.20.0
+    targetRevision: 1.21.1
     helm:
       valuesObject:
         provider:
@@ -17,8 +19,10 @@ spec:
         # Hard boundary: refuse to touch records outside this zone.
         domainFilters:
           - aws.ololol.lol
-        # Ownership marker written into TXT records; must be unique per cluster.
-        txtOwnerId: aws-eks-platform
+        # Ownership marker written into TXT records.
+        # Deliberately NOT the cluster name: the hosted zone outlives
+        # `terraform destroy`, so this must stay stable across rebuilds.
+        txtOwnerId: aws-lab
         policy: sync
         nodeSelector:
           kubernetes.io/arch: arm64
@@ -26,7 +30,8 @@ spec:
           create: true
           name: external-dns
           annotations:
-            eks.amazonaws.com/role-arn: arn:aws:iam::765148471972:role/aws-eks-platform-external-dns
+            # IRSA role created by module.external_dns_irsa in aws-infra.
+            eks.amazonaws.com/role-arn: arn:aws:iam::765148471972:role/aws-lab-external-dns
   destination:
     server: https://kubernetes.default.svc
     namespace: external-dns
